@@ -1,21 +1,26 @@
 {
   "expo": {
-    "name": "time-tracker-app",
-    "slug": "time-tracker-app",
+    "name": "Habit",
+    "slug": "ritual",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ritual_app.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anven.ritual",
+      "buildNumber": "1.0.1"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +30,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9003039d-50cb-4983-b57f-0d5b050de0c9"
+      }
     }
-  }
+  },
+  "platforms": [
+    "ios",
+    "android"
+  ]
 }
