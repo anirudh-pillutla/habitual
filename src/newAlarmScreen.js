@@ -31,6 +31,21 @@ function SunriseAlarmScreen() {
     }
 
     useEffect(() => {
+        const loadSavedCoordinates = async () => {
+            const savedLatitude = await AsyncStorage.getItem('latitude');
+            const savedLongitude = await AsyncStorage.getItem('longitude');
+            if (savedLatitude !== null) {
+                setLatitude(savedLatitude);
+            }
+            if (savedLongitude !== null) {
+                setLongitude(savedLongitude);
+            }
+        };
+
+        loadSavedCoordinates();
+    }, []);
+
+    useEffect(() => {
         const checkAlarm = async () => {
             const storedTime = await AsyncStorage.getItem('alarmTime');
             if (storedTime) {
@@ -67,6 +82,12 @@ function SunriseAlarmScreen() {
             if (data.status === 'OK') {
                 const utcSunriseTime = new Date(data.results.sunrise);
                 const localSunriseTime = new Date(utcSunriseTime.getTime() + utcSunriseTime.getTimezoneOffset() * 60000 + new Date().getTimezoneOffset() * -60000);
+                const currentTime = new Date();
+                if (currentTime > localSunriseTime) {  
+                    console.log('Current Time is greater than local sunrise time');
+                    localSunriseTime.setDate(localSunriseTime.getDate() + 1);
+                    utcSunriseTime.setDate(utcSunriseTime.getDate() + 1);
+                }
                 setLocalSunriseTime(localSunriseTime.toLocaleTimeString());
                 setSunriseTime(utcSunriseTime.toISOString());
                 await AsyncStorage.setItem('sunriseTime', localSunriseTime.toISOString());
@@ -131,10 +152,6 @@ function SunriseAlarmScreen() {
                         <Text style={styles.buttonText}>Set Lat / Long</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <Button
-                    title="Set Lat / Long"
-                    onPress={handleSetLatLong}
-                /> */}
                 {sunriseTime ? <Text>Sunrise Time: {localSunriseTime}</Text> : null}
                 <TextInput
                     style={styles.input}
